@@ -2,7 +2,7 @@ About
 =====
 
 nim.uri3 is a Nim module that provides improved way for working with URIs. It is based on the "uri" module in the Nim standard library
-and the "[purl](https://github.com/codeinthehole/purl)" Python module.
+and the "[purl](https://github.com/codeinthehole/purl)" Python module. This is based on "[nim-uri2](https://github.com/achesak/nim-uri2)"
 
 Examples
 ========
