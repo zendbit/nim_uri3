@@ -1,5 +1,4 @@
 # Package
-[Package]
 version     = "0.1.0"
 author      = "Amru Rosyada"
 description = "This is extension for uri (For handling uri) module and forked from uri2 with some bug fix."
@@ -7,5 +6,4 @@ license     = "MIT"
 srcDir      = "src"
 
 # Deps
-[Deps]
-requires "nim >= 0.15"
+requires "nim >= 0.19.4"
