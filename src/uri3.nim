@@ -144,8 +144,7 @@ proc parseUri3*(url: string): Uri3 =
     for i in 0..high(queries):
         queries2[i] = queries[i].split("=")
 
-    var newuri: Uri3 = Uri3(scheme: u.scheme, username: u.username, password: u.password, hostname: u.hostname, port: u.port,
-                             path: u.path, anchor: u.anchor, queries: queries2)
+    var newuri: Uri3 = Uri3(scheme: u.scheme, username: u.username, password: u.password, hostname: u.hostname, port: u.port, path: u.path, anchor: u.anchor, queries: queries2)
 
     return newuri
 
@@ -261,6 +260,19 @@ proc getQuery*(self: Uri3, query: string, default: string = ""): string =
             break
 
     return queryResult
+
+proc getQueryString*(self: Uri3): string =
+    ## Returns a specific query in ``uri``, or the specified ``default`` if there is no query with that name.
+
+    var query: string = ""
+    for i in 0..high(self.queries):
+        if self.queries[i].len != 2: continue
+        query &= self.queries[i][0] & "=" & self.queries[i][1]
+        if i != high(self.queries):
+            query &= "&"
+
+    if query.strip() != "":
+      return "?" & query
 
 
 proc setDomain*(self: Uri3, domain: string) =
