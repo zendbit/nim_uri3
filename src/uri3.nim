@@ -131,7 +131,7 @@ type
     port: string
     path: string
     anchor: string
-    queries: seq[seq[string]]
+    queries: seq[(string, string)]
 
 
 proc parseUri3*(url: string): Uri3 =
@@ -140,9 +140,11 @@ proc parseUri3*(url: string): Uri3 =
   let u: URI = parseUri(url)
 
   let queries: seq[string] = u.query.split("&")
-  var queries2: seq[seq[string]] = newSeq[seq[string]](len(queries))
+  var queries2: seq[(string, string)] = newSeq[(string, string)](len(queries))
   for i in 0..high(queries):
-    queries2[i] = queries[i].split("=")
+    let tmp = queries[i].split("=")
+    if tmp.len == 2:
+      queries2[i] = (tmp[0], tmp[1])
 
   var newuri: Uri3 = Uri3(
     scheme: u.scheme,
@@ -238,7 +240,7 @@ proc getAnchor*(self: Uri3): string =
   return self.anchor
 
 
-proc getAllQueries*(self: Uri3): seq[seq[string]] =
+proc getAllQueries*(self: Uri3): seq[(string, string)] =
   ## Returns all queries of ``uri``.
 
   return self.queries
@@ -258,10 +260,11 @@ proc getQueryString*(self: Uri3): string =
 
     var query: string = ""
     for i in 0..high(self.queries):
-        if self.queries[i].len != 2: continue
-        query &= self.queries[i][0] & "=" & self.queries[i][1]
-        if i != high(self.queries):
-            query &= "&"
+      let k = self.queries[i][0].strip()
+      let v = self.queries[i][1].strip()
+      query &= k & "=" & v
+      if i != high(self.queries):
+        query &= "&"
 
     if query.strip() != "":
       return "?" & query
@@ -320,7 +323,7 @@ proc setAnchor*(self: Uri3, anchor: string) =
   self.anchor = anchor
 
 
-proc setAllQueries*(self: Uri3, queries: seq[seq[string]]) =
+proc setAllQueries*(self: Uri3, queries: seq[(string, string)]) =
   ## Sets all the queries for ``uri``.
   self.queries = queries
 
@@ -344,8 +347,7 @@ proc setQuery*(
   if exists:
     self.queries[index][1] = value
   else:
-    self.queries.add(@[query, value])
-
+    self.queries.add(@[(query, value)])
 
 proc setQueries*(
   self: Uri3,
@@ -359,22 +361,30 @@ proc setQueries*(
   for i in queryList:
     self.setQuery(i[0], i[1], overwrite)
 
-proc `/`*(self: Uri3, path: string) =
+proc `/`*(self: Uri3, path: string): Uri3 =
   ## Operator version of ``appendPathSegment()``.
-  self.appendPathSegment(path)
+  result = deepCopy(self)
+  result.appendPathSegment(path)
 
-
-proc `/`*(path: string, self: Uri3) =
+proc `/`*(path: string, self: Uri3): Uri3 =
   ## Operator version of ``prependPathSegment()``.
-  self.prependPathSegment(path)
+  result = deepCopy(self)
+  result.prependPathSegment(path)
+
+proc `?`*(self: Uri3; query: openArray[(string, string)]): Uri3 =
+  for q in query:
+    self.setQuery(q[0], q[1], true)
+  return self
 
 
 proc `$`*(self: Uri3): string =
   ## Convers ``uri`` to a string representation.
   var query: string = ""
   for i in 0..high(self.queries):
-    if self.queries[i].len != 2: continue
-    query &= self.queries[i][0] & "=" & self.queries[i][1]
+    let k = self.queries[i][0].strip()
+    let v = self.queries[i][1].strip()
+    if k == "" and v == "": continue
+    query &= k & "=" & v
     if i != high(self.queries):
       query &= "&"
   # Let's be lazy about this. :P
