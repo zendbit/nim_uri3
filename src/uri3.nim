@@ -196,38 +196,38 @@ proc prependPathSegment*(self: Uri3, path: string) =
 
 proc getDomain*(self: Uri3): string =
   # Returns the domain of ``uri``.
-  return self.hostname
+  result = self.hostname
 
 
 proc getScheme*(self: Uri3): string =
   # Returns the scheme of ``uri``.
-  return self.scheme
+  result = self.scheme
 
 
 proc getUsername*(self: Uri3): string =
   # Returns the username of ``uri``.
-  return self.username
+  result = self.username
 
 
 proc getPassword*(self: Uri3): string =
   # Returns the password of ``uri``.
-  return self.password
+  result = self.password
 
 
 proc getPort*(self: Uri3): string =
   # Returns the port of ``uri``.
-  return self.port
+  result = self.port
 
 
 proc getPath*(self: Uri3): string =
   # Returns the path of ``uri``.
-  return self.path
+  result = self.path
 
 
 proc getPathSegments*(self: Uri3): seq[string] =
   # Returns the path segments of ``uri`` as a sequence.
   var paths: seq[string] = self.path.split("/")
-  return paths[1..high(paths)]
+  result = paths[1..high(paths)]
 
 
 proc getPathSegment*(self: Uri3, index: int): string =
@@ -237,13 +237,13 @@ proc getPathSegment*(self: Uri3, index: int): string =
 
 proc getAnchor*(self: Uri3): string =
   # Returns the anchor of ``uri``.
-  return self.anchor
+  result = self.anchor
 
 
 proc getAllQueries*(self: Uri3): seq[(string, string)] =
   # Returns all queries of ``uri``.
 
-  return self.queries
+  result = self.queries
 
 
 proc getQuery*(self: Uri3, query: string, default: string = ""): string =
@@ -253,7 +253,7 @@ proc getQuery*(self: Uri3, query: string, default: string = ""): string =
     if i[0] == query:
       queryResult = i[1]
       break
-  return queryResult
+  result = queryResult
 
 proc getQueryString*(self: Uri3): string =
     # Returns a specific query in ``uri``, or the specified ``default`` if there is no query with that name.
@@ -267,7 +267,7 @@ proc getQueryString*(self: Uri3): string =
         query &= "&"
 
     if query.strip() != "":
-      return "?" & query
+      result = "?" & query
 
 
 proc setDomain*(self: Uri3, domain: string) =
@@ -412,4 +412,4 @@ proc `$`*(self: Uri3): string =
     hostname: self.hostname,
     port: self.port, path: self.path, query: query,
     anchor: self.anchor)
-  return $u
+  result = $u
