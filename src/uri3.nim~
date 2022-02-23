@@ -16,7 +16,7 @@
 #    # Working with path and path segments.
 #
 #    # Parse a URI.
-#    var uri : Uri3 = parseURI3("http://www.examplesite.com/path/to/location")
+#    var uri : Uri3 = parseUri3("http://www.examplesite.com/path/to/location")
 #    echo(uri.getPath()) # "/path/to/location"
 #
 #    # Append a path segment.
@@ -47,7 +47,7 @@
 #    # Working with queries.
 #
 #    # Parse a URI.
-#    var uri : Uri3 = parseURI3("http://www.examplesite.com/index.html?ex1=hello&ex2=world")
+#    var uri : Uri3 = parseUri3("http://www.examplesite.com/index.html?ex1=hello&ex2=world")
 #
 #    # Get all queries.
 #    var queries : seq[seq[string]] = uri.getAllQueries()
@@ -91,7 +91,7 @@
 #    # Other examples.
 #
 #    # Parse a URI.
-#    var uri : Uri3 = parseURI3("http://www.examplesite.com/path/to/location")
+#    var uri : Uri3 = parseUri3("http://www.examplesite.com/path/to/location")
 #
 #    # Convert the URI to a string representation.
 #    var toString : string = $uri.
@@ -134,7 +134,7 @@ type
     queries: seq[(string, string)]
 
 
-proc parseUri3*(url: string): URI3 =
+proc parseUri3*(url: string): Uri3 =
   # Parses a URI.
 
   let u: URI = parseUri(url)
@@ -146,7 +146,7 @@ proc parseUri3*(url: string): URI3 =
     if tmp.len == 2:
       queries2[i] = (tmp[0], tmp[1])
 
-  var newuri: Uri3 = URI3(
+  var newuri: Uri3 = Uri3(
     scheme: u.scheme,
     username: u.username,
     password: u.password,
