@@ -16,7 +16,7 @@
 #    # Working with path and path segments.
 #
 #    # Parse a URI.
-#    var uri : Uri3 = parseUri3("http://www.examplesite.com/path/to/location")
+#    var uri : URI3 = parseURI3("http://www.examplesite.com/path/to/location")
 #    echo(uri.getPath()) # "/path/to/location"
 #
 #    # Append a path segment.
@@ -47,7 +47,7 @@
 #    # Working with queries.
 #
 #    # Parse a URI.
-#    var uri : Uri3 = parseUri3("http://www.examplesite.com/index.html?ex1=hello&ex2=world")
+#    var uri : URI3 = parseURI3("http://www.examplesite.com/index.html?ex1=hello&ex2=world")
 #
 #    # Get all queries.
 #    var queries : seq[seq[string]] = uri.getAllQueries()
@@ -91,7 +91,7 @@
 #    # Other examples.
 #
 #    # Parse a URI.
-#    var uri : Uri3 = parseUri3("http://www.examplesite.com/path/to/location")
+#    var uri : URI3 = parseURI3("http://www.examplesite.com/path/to/location")
 #
 #    # Convert the URI to a string representation.
 #    var toString : string = $uri.
@@ -123,7 +123,7 @@ import strutils
 
 
 type
-  Uri3* = ref object
+  URI3* = ref object
     scheme: string
     username: string
     password: string
@@ -134,7 +134,7 @@ type
     queries: seq[(string, string)]
 
 
-proc parseUri3*(url: string): Uri3 =
+proc parseURI3*(url: string): URI3 =
   # Parses a URI.
 
   let u: URI = parseUri(url)
@@ -146,7 +146,7 @@ proc parseUri3*(url: string): Uri3 =
     if tmp.len == 2:
       queries2[i] = (tmp[0], tmp[1])
 
-  var newuri: Uri3 = Uri3(
+  var newuri: URI3 = URI3(
     scheme: u.scheme,
     username: u.username,
     password: u.password,
@@ -168,7 +168,7 @@ proc encodeToQuery*(query: openArray[(string, string)],
   usePlus: bool = true; omitEq: bool = true): string =
   result = encodeQuery(query, usePlus, omitEq)
 
-proc appendPathSegment*(self: Uri3, path: string) =
+proc appendPathSegment*(self: URI3, path: string) =
   # Appends the path segment specified by ``path`` to the end of the existing path.
   var newPath: string = self.path
   var path2: string = path
@@ -180,7 +180,7 @@ proc appendPathSegment*(self: Uri3, path: string) =
   self.path = newPath
 
 
-proc prependPathSegment*(self: Uri3, path: string) =
+proc prependPathSegment*(self: URI3, path: string) =
   # Prepends the path segment specified by ``path`` to the end of the existing path.
   var newPath: string = self.path
   var path2: string = path
@@ -194,59 +194,59 @@ proc prependPathSegment*(self: Uri3, path: string) =
   self.path = newPath
 
 
-proc getDomain*(self: Uri3): string =
+proc getDomain*(self: URI3): string =
   # Returns the domain of ``uri``.
   result = self.hostname
 
 
-proc getScheme*(self: Uri3): string =
+proc getScheme*(self: URI3): string =
   # Returns the scheme of ``uri``.
   result = self.scheme
 
 
-proc getUsername*(self: Uri3): string =
+proc getUsername*(self: URI3): string =
   # Returns the username of ``uri``.
   result = self.username
 
 
-proc getPassword*(self: Uri3): string =
+proc getPassword*(self: URI3): string =
   # Returns the password of ``uri``.
   result = self.password
 
 
-proc getPort*(self: Uri3): string =
+proc getPort*(self: URI3): string =
   # Returns the port of ``uri``.
   result = self.port
 
 
-proc getPath*(self: Uri3): string =
+proc getPath*(self: URI3): string =
   # Returns the path of ``uri``.
   result = self.path
 
 
-proc getPathSegments*(self: Uri3): seq[string] =
+proc getPathSegments*(self: URI3): seq[string] =
   # Returns the path segments of ``uri`` as a sequence.
   var paths: seq[string] = self.path.split("/")
   result = paths[1..high(paths)]
 
 
-proc getPathSegment*(self: Uri3, index: int): string =
+proc getPathSegment*(self: URI3, index: int): string =
   # Returns the path segment of ``uri`` at the specified index.
   return self.getPathSegments()[index]
 
 
-proc getAnchor*(self: Uri3): string =
+proc getAnchor*(self: URI3): string =
   # Returns the anchor of ``uri``.
   result = self.anchor
 
 
-proc getAllQueries*(self: Uri3): seq[(string, string)] =
+proc getAllQueries*(self: URI3): seq[(string, string)] =
   # Returns all queries of ``uri``.
 
   result = self.queries
 
 
-proc getQuery*(self: Uri3, query: string, default: string = ""): string =
+proc getQuery*(self: URI3, query: string, default: string = ""): string =
   # Returns a specific query in ``uri``, or the specified ``default`` if there is no query with that name.
   var queryResult: string = default
   for i in self.queries:
@@ -255,7 +255,7 @@ proc getQuery*(self: Uri3, query: string, default: string = ""): string =
       break
   result = queryResult
 
-proc getQueryString*(self: Uri3): string =
+proc getQueryString*(self: URI3): string =
     # Returns a specific query in ``uri``, or the specified ``default`` if there is no query with that name.
 
     var query: string = ""
@@ -270,37 +270,37 @@ proc getQueryString*(self: Uri3): string =
       result = "?" & query
 
 
-proc setDomain*(self: Uri3, domain: string) =
+proc setDomain*(self: URI3, domain: string) =
   # Sets the domain of ``uri``.
   self.hostname = domain
 
 
-proc setScheme*(self: Uri3, scheme: string) =
+proc setScheme*(self: URI3, scheme: string) =
   # Sets the scheme of ``uri``.
   self.scheme = scheme
 
 
-proc setUsername*(self: Uri3, username: string) =
+proc setUsername*(self: URI3, username: string) =
   # Sets the username of ``uri``.
   self.username = username
 
 
-proc setPassword*(self: Uri3, password: string) =
+proc setPassword*(self: URI3, password: string) =
   # Sets the password of ``uri``.
   self.password = password
 
 
-proc setPort*(self: Uri3, port: string) =
+proc setPort*(self: URI3, port: string) =
   # Sets the port of ``uri``.
   self.port = port
 
 
-proc setPath*(self: Uri3, path: string) =
+proc setPath*(self: URI3, path: string) =
   # Sets the path of ``uri``.
   self.path = path
 
 
-proc setPathSegments*(self: Uri3, paths: seq[string]) =
+proc setPathSegments*(self: URI3, paths: seq[string]) =
   # Sets the path segments of ``uri``.
   var newpath: string = ""
   for i in 0..high(paths):
@@ -308,7 +308,7 @@ proc setPathSegments*(self: Uri3, paths: seq[string]) =
   self.path = newpath
 
 
-proc setPathSegment*(self: Uri3, path: string, index: int) =
+proc setPathSegment*(self: URI3, path: string, index: int) =
   # Sets the path segment of ``uri`` at the given index. If the given index is larger than the highest
   # current index, there will be no change.
   var segments: seq[string] = self.getPathSegments()
@@ -318,18 +318,18 @@ proc setPathSegment*(self: Uri3, path: string, index: int) =
   self.setPathSegments(segments)
 
 
-proc setAnchor*(self: Uri3, anchor: string) =
+proc setAnchor*(self: URI3, anchor: string) =
   # Sets the anchor of ``uri``.
   self.anchor = anchor
 
 
-proc setAllQueries*(self: Uri3, queries: seq[(string, string)]) =
+proc setAllQueries*(self: URI3, queries: seq[(string, string)]) =
   # Sets all the queries for ``uri``.
   self.queries = queries
 
 
 proc setQuery*(
-  self: Uri3,
+  self: URI3,
   query: string,
   value: string,
   overwrite: bool = true) =
@@ -350,13 +350,13 @@ proc setQuery*(
     self.queries.add(@[(query, value)])
 
 proc setQueries*(
-  self: Uri3,
+  self: URI3,
   queryList: openarray[(string, string)],
   overwrite: bool = true) =
   #
   # set queries, default overwrite to true
   # will overwrite with new value if query already exists
-  # let urix = parseUri3("https://hello.com").setQueries(@[("foo", "bar"), ("foo1", "bar1")])
+  # let urix = parseURI3("https://hello.com").setQueries(@[("foo", "bar"), ("foo1", "bar1")])
   # urix will have value https://hello.com?foo=bar&foo1=bar1
   #
   # Sets multiple queries with the specified names and values in ``uri``. If ``overwrite`` is set to false, this will not
@@ -367,34 +367,34 @@ proc setQueries*(
   for i in queryList:
     self.setQuery(i[0], i[1], overwrite)
 
-proc `/`*(self: Uri3, path: string) =
+proc `/`*(self: URI3, path: string) =
   #
   # append new segment to the url
-  # let urix = parseUri3("https://hello.com")/"welcome"/"home"
+  # let urix = parseURI3("https://hello.com")/"welcome"/"home"
   # urix will have value https://hello.com/welcome/home
   #
   # Operator version of ``appendPathSegment()``.
   self.appendPathSegment(path)
 
-proc `/`*(path: string, self: Uri3) =
+proc `/`*(path: string, self: URI3) =
   #
   # prepend new segment to the url
-  # let urix = "welcome"/parseUri3("https://hello.com/home")
+  # let urix = "welcome"/parseURI3("https://hello.com/home")
   # urix will have value https://hello.com/welcome/home
   #
   # Operator version of ``prependPathSegment()``.
   self.prependPathSegment(path)
 
-proc `?`*(self: Uri3; query: openArray[(string, string)]) =
+proc `?`*(self: URI3; query: openArray[(string, string)]) =
   #
   # add query parameter
-  # let urix = parseUri3("https://hello.com") ? [("search", "hai"), ("offset", "4")]
+  # let urix = parseURI3("https://hello.com") ? [("search", "hai"), ("offset", "4")]
   # urix will have value https://hello.com?search=hai&offset=4
   #
   for q in query:
     self.setQuery(q[0], q[1], true)
 
-proc `$`*(self: Uri3): string =
+proc `$`*(self: URI3): string =
   # Convers ``uri`` to a string representation.
   var query: string = ""
   for i in 0..high(self.queries):
