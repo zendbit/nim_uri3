@@ -565,6 +565,8 @@ proc `$`*(self: URI3): string =
       if i != high(q):
         query &= "&"
 
+    result = query
+
   # Let's be lazy about this. :P
   var u: URI = URI(
     scheme: self.scheme,
@@ -578,6 +580,6 @@ proc `$`*(self: URI3): string =
 
   var url = $u
   if self.hash != "":
-    url &= self.hash & buildQuery(self.hashQueries)
+    url &= "/" & self.hash & buildQuery(self.hashQueries)
 
-  result = $u
+  result = $url
