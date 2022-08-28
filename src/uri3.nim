@@ -120,6 +120,7 @@
 
 import uri
 import strutils
+import strformat
 
 type
   URI3* = ref object
@@ -552,6 +553,13 @@ proc `?h`*(self: URI3; query: openArray[(string, string)]) =
   #
   for q in query:
     self.setHashQuery(q[0], q[1], true)
+
+proc getBaseUrl*(self: URI3): string =
+  if self.port == "" or self.port == "80":
+    result = &"{self.getScheme}://{self.getDomain}"
+
+  else:
+    result = &"{self.getScheme}://{self.getDomain}:{self.getPort}"
 
 proc `$`*(self: URI3): string =
   # Convers ``uri`` to a string representation.

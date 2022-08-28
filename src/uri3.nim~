@@ -120,6 +120,7 @@
 
 import uri
 import strutils
+import strformat
 
 type
   URI3* = ref object
@@ -172,6 +173,13 @@ proc parseURI3*(url: string): URI3 =
     hashQueries: hashQueries)
 
   return newuri
+
+proc getBaseUrl*(self: URI3): string =
+  if self.port == "" or self.port == "80":
+    result = &"{self.getScheme()}://{self.getDomain}"
+
+  else:
+    result = &"{self.getScheme()}://{self.getDomain}:{self.getPort}"
 
 proc encodeUri*(url: string, usePlus: bool = true): string =
   result = encodeUrl(url, usePlus)
@@ -579,7 +587,7 @@ proc `$`*(self: URI3): string =
     anchor: self.anchor)
 
   var url = $u
-  #if self.hash != "":
-  # url &= "/" & self.hash & buildQuery(self.hashQueries)
+  if self.hash != "":
+    url &= "/" & self.hash & buildQuery(self.hashQueries)
 
   result = $url
