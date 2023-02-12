@@ -123,7 +123,7 @@ import strutils
 import strformat
 
 type
-  URI3* = ref object
+  URI3* = ref object of RootObj
     scheme: string
     username: string
     password: string

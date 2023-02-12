@@ -1,5 +1,5 @@
 # Package
-version     = "0.1.7"
+version     = "0.1.8"
 author      = "Amru Rosyada"
 description = "This is extension for uri (For handling uri) module and forked from uri2 with some bug fix."
 license     = "MIT"
