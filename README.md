@@ -10,7 +10,7 @@ Examples
 Working with path and path segments:
 
     # Parse a URI.
-    var uri : Uri3 = parseUri3("http://www.examplesite.com/path/to/location")
+    var uri : Uri3 = parseURI3("http://www.examplesite.com/path/to/location")
     echo(uri.getPath()) # "/path/to/location"
 
     # Append a path segment.
@@ -38,10 +38,10 @@ Working with path and path segments:
 Working with queries:
 
     # Parse a URI.
-    var uri : Uri3 = parseUri3("http://www.examplesite.com/index.html?ex1=hello&ex2=world")
+    var uri : Uri3 = parseURI3("http://www.examplesite.com/index.html?ex1=hello&ex2=world")
 
     # Get all queries.
-    var queries : seq[seq[string]] = uri.getAllQueries()
+    var queries : seq[seq[string]] = uri.getAllQuery()
     for i in queries:
         echo(i[0]) # Query name.
         echo(i[1]) # Query value.
@@ -66,12 +66,12 @@ Working with queries:
     echo(uri.getQuery("ex1")) # not overwritten: still "hello"
 
     # Set all queries.
-    uri.setAllQueries(@[  @["new", "value1",],  @["example", "value2"]])
+    uri.setAllQuery(@[  @["new", "value1",],  @["example", "value2"]])
     echo(uri.getQuery("new")) # exists: "value1"
     echo(uri.getQuery("ex1")) # doesn't exist: ""
 
     # Set multiple queries.
-    uri.setQueries(@[  @["ex1", "new"],  @["new", "changed"]])
+    uri.setQuery(@[  @["ex1", "new"],  @["new", "changed"]])
     echo(uri.getQuery("new")) # "changed"
     echo(uri.getQuery("example")) # "value2"
     echo(uri.getQuery("ex1")) # "new"
@@ -79,7 +79,7 @@ Working with queries:
 Other examples:
 
     # Parse a URI.
-    var uri : Uri3 = parseUri3("http://www.examplesite.com/path/to/location")
+    var uri : Uri3 = parseURI3("http://www.examplesite.com/path/to/location")
 
     # Convert the URI to a string representation.
     var toString : string = $uri.
@@ -93,11 +93,11 @@ Other examples:
     echo(uri) # "http://example.newsite.org/path/to/location"
 
     # Encode uri
-    let encUri = encodeUri("example.newsite.org/path/to/location yeah", usePlus=false) #default usePlus = true
+    let encUri = encodeURI("example.newsite.org/path/to/location yeah", usePlus=false) #default usePlus = true
     echo(encUri)
 
     # Decode uri
-    let decUri = encodeUri(encUri, decodePlus=false) #default decodePlus = true
+    let decUri = encodeURI(encUri, decodePlus=false) #default decodePlus = true
     echo(decUri)
 
     # encodeToQuery
