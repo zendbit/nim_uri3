@@ -10,13 +10,13 @@
 ##
 ## let uri = parseURI3("https://user:password@domain.com/profile/1234?id=xyz#/home/?page=10")
 ##
-## echo uri.getQueryString("id")
-## echo uri.getAllQueryString()
+## echo uri.getQuery("id")
+## echo uri.getAllQuery()
 ## echo uri.getUsername()
 ## echo uri.getPassword()
 ## echo uri.getAnchor()
-## echo uri.getAnchorQueryString("page")
-## echo uri.getAllAnchorQueryString()
+## echo uri.getAnchorQuery("page")
+## echo uri.getAllAnchorQuery()
 ## echo uri.getDomain()
 ## echo uri.getPort()
 ## echo uri.getScheme()
@@ -90,13 +90,13 @@ proc parseURI3*(url : string) : URI3 =
   ## create new URI3 then set as return result
 
 
-proc encodeUri*(url : string, usePlus : bool = true) : string =
+proc encodeURI*(url : string, usePlus : bool = true) : string =
   ## encode  non uri characters
 
   result = encodeUrl(url, usePlus)
 
 
-proc decodeUri*(url : string, decodePlus : bool = true) : string =
+proc decodeURI*(url : string, decodePlus : bool = true) : string =
   ## encode non uri characters
 
   result = decodeUrl(url, decodePlus)
@@ -250,19 +250,19 @@ proc getAnchor*(self : URI3) : string =
   result = self.anchor
 
 
-proc getAllQueryString*(self : URI3) : seq[(string, string)] =
+proc getAllQuery*(self : URI3) : seq[(string, string)] =
   ## return all query pair from uri exclude anchor
 
   result = self.queries
 
 
-proc getAllAnchorQueryString*(self : URI3) : seq[(string, string)] =
+proc getAllAnchorQuery*(self : URI3) : seq[(string, string)] =
   ## return all anchor query pair as array
 
   result = self.anchorQueries
 
 
-proc getQueryString*(self: URI3, query: string, default: string = ""): string =
+proc getQuery*(self: URI3, query: string, default: string = ""): string =
   ## return specific query string from uri, exclude anchor
 
   var queryResult: string = default
@@ -274,7 +274,7 @@ proc getQueryString*(self: URI3, query: string, default: string = ""): string =
   result = queryResult
 
 
-proc getAnchorQueryString*(self : URI3, query : string, default : string = "") : string =
+proc getAnchorQuery*(self : URI3, query : string, default : string = "") : string =
   ## return specific anchor query string from uri
 
   var queryResult : string = default
@@ -286,7 +286,7 @@ proc getAnchorQueryString*(self : URI3, query : string, default : string = "") :
   result = queryResult
 
 
-proc getQueryString*(self : URI3) : string =
+proc getQuery*(self : URI3) : string =
   ## return query string as string
 
   var query : string = ""
@@ -302,7 +302,7 @@ proc getQueryString*(self : URI3) : string =
     result = "?" & query
 
 
-proc getAnchorQueryString*(self : URI3) : string =
+proc getAnchorQuery*(self : URI3) : string =
   ## return anchor query string as string
 
   var query: string = ""
@@ -402,19 +402,19 @@ proc setAnchor*(self : URI3, anchor : string) =
   self.anchor = anchor
 
 
-proc setAllQueryString*(self : URI3, queries : seq[(string, string)]) =
+proc setAllQuery*(self : URI3, queries : seq[(string, string)]) =
   ## set all query string (array pair query string) from uri
 
   self.queries = queries
 
 
-proc setAllAnchorQueryString*(self : URI3, queries : seq[(string, string)]) =
+proc setAllAnchorQuery*(self : URI3, queries : seq[(string, string)]) =
   ## set all anchor query string (array pair query string) from uri
 
   self.anchorQueries = queries
 
 
-proc setQueryString*(
+proc setQuery*(
     self : URI3,
     query : string,
     value : string,
@@ -422,7 +422,7 @@ proc setQueryString*(
   ) =
   ## set query string value for specific query string name
 
-  if not overwrite and self.getQueryString(query) != "" :
+  if not overwrite and self.getQuery(query) != "" :
     return
   var exists: bool = false
   var index: int = -1
@@ -437,7 +437,7 @@ proc setQueryString*(
     self.queries.add(@[(query, value)])
 
 
-proc setAnchorQueryString*(
+proc setAnchorQuery*(
     self: URI3,
     query: string,
     value: string,
@@ -445,7 +445,7 @@ proc setAnchorQueryString*(
   ) =
   ## set anchor query string value for specific query string name
 
-  if not overwrite and self.getAnchorQueryString(query) != "" :
+  if not overwrite and self.getAnchorQuery(query) != "" :
     return
   var exists: bool = false
   var index: int = -1
@@ -460,7 +460,7 @@ proc setAnchorQueryString*(
     self.anchorQueries.add(@[(query, value)])
 
 
-proc setQueryString*(
+proc setQuery*(
     self : URI3,
     queryList : openarray[(string, string)],
     overwrite : bool = true
@@ -468,10 +468,10 @@ proc setQueryString*(
   ## set query for specific pair in array query string, default overwrite
 
   for i in queryList :
-    self.setQueryString(i[0], i[1], overwrite)
+    self.setQuery(i[0], i[1], overwrite)
 
 
-proc setAnchorQueryString*(
+proc setAnchorQuery*(
     self : URI3,
     queryList : openarray[(string, string)],
     overwrite : bool = true
@@ -479,7 +479,7 @@ proc setAnchorQueryString*(
   ## set query for specific pair in array query string, default overwrite
 
   for i in queryList :
-    self.setAnchorQueryString(i[0], i[1], overwrite)
+    self.setAnchorQuery(i[0], i[1], overwrite)
 
 
 proc `/`*(self : URI3, path : string) =
@@ -510,14 +510,14 @@ proc `?`*(self : URI3, query : openArray[(string, string)]) =
   ## add query string pair into uri
 
   for q in query :
-    self.setQueryString(q[0], q[1], true)
+    self.setQuery(q[0], q[1], true)
 
 
 proc `?h`*(self : URI3, query : openArray[(string, string)]) =
   ## add query string pair into anchor uri
 
   for q in query :
-    self.setAnchorQueryString(q[0], q[1], true)
+    self.setAnchorQuery(q[0], q[1], true)
 
 
 proc getBaseUri*(self : URI3) : string =
