@@ -11,12 +11,12 @@
 ## let uri = parseURI3("https://user:password@domain.com/profile/1234?id=xyz#/home/?page=10")
 ##
 ## echo uri.getQuery("id")
-## echo uri.getAllQuery()
+## echo uri.getQueries()
 ## echo uri.getUsername()
 ## echo uri.getPassword()
 ## echo uri.getAnchor()
 ## echo uri.getAnchorQuery("page")
-## echo uri.getAllAnchorQuery()
+## echo uri.getAnchorQueries()
 ## echo uri.getDomain()
 ## echo uri.getPort()
 ## echo uri.getScheme()
@@ -250,13 +250,13 @@ proc getAnchor*(self : URI3) : string =
   result = self.anchor
 
 
-proc getAllQuery*(self : URI3) : seq[(string, string)] =
+proc getQueries*(self : URI3) : seq[(string, string)] =
   ## return all query pair from uri exclude anchor
 
   result = self.queries
 
 
-proc getAllAnchorQuery*(self : URI3) : seq[(string, string)] =
+proc getAnchorQueries*(self : URI3) : seq[(string, string)] =
   ## return all anchor query pair as array
 
   result = self.anchorQueries
@@ -402,13 +402,13 @@ proc setAnchor*(self : URI3, anchor : string) =
   self.anchor = anchor
 
 
-proc setAllQuery*(self : URI3, queries : seq[(string, string)]) =
+proc setQueries*(self : URI3, queries : seq[(string, string)]) =
   ## set all query string (array pair query string) from uri
 
   self.queries = queries
 
 
-proc setAllAnchorQuery*(self : URI3, queries : seq[(string, string)]) =
+proc setAnchorQueries*(self : URI3, queries : seq[(string, string)]) =
   ## set all anchor query string (array pair query string) from uri
 
   self.anchorQueries = queries
