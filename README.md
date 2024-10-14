@@ -10,7 +10,7 @@ Examples
 Working with path and path segments:
 
         # Parse a URI.
-        var uri : Uri3 = parseURI3("http://www.examplesite.com/path/to/location")
+        var uri : Uri3 = parseUri3("http://www.examplesite.com/path/to/location")
         echo(uri.getPath()) # "/path/to/location"
 
         # Append a path segment.
@@ -38,7 +38,7 @@ Working with path and path segments:
 Working with queries:
 
         # Parse a URI.
-        var uri : Uri3 = parseURI3("http://www.examplesite.com/index.html?ex1=hello&ex2=world")
+        var uri : Uri3 = parseUri3("http://www.examplesite.com/index.html?ex1=hello&ex2=world")
 
         # Get all queries.
         var queries : seq[seq[string]] = uri.getQueries()
@@ -79,7 +79,7 @@ Working with queries:
 Other examples:
 
         # Parse a URI.
-        var uri : Uri3 = parseURI3("http://www.examplesite.com/path/to/location")
+        var uri : Uri3 = parseUri3("http://www.examplesite.com/path/to/location")
 
         # Convert the URI to a string representation.
         var toString : string = $uri.
