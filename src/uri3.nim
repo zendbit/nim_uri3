@@ -1,4 +1,4 @@
-## Nim module for improved URI handling.
+## Nim module for improved Uri handling.
 ## Based on the "uri" module in the Nim standard library and the
 ## "purl" Python module at https://github.com/codeinthehole/purl.
 
@@ -63,8 +63,8 @@ proc parseUri3*(url : string) : Uri3 =
       if tmp.len == 2 :
         result.add((tmp[0], tmp[1]))
 
-  let u : URI = parseUri(url)
-  ## parse uri as std URI
+  let u : Uri = parseUri(url)
+  ## parse uri as std Uri
 
   var anchorUri = u.anchor.strip()
   var anchorUriQueries: seq[(string, string)] = @[]
@@ -90,13 +90,13 @@ proc parseUri3*(url : string) : Uri3 =
   ## create new Uri3 then set as return result
 
 
-proc encodeURI*(url : string, usePlus : bool = true) : string =
+proc encodeUri*(url : string, usePlus : bool = true) : string =
   ## encode  non uri characters
 
   result = encodeUrl(url, usePlus)
 
 
-proc decodeURI*(url : string, decodePlus : bool = true) : string =
+proc decodeUri*(url : string, decodePlus : bool = true) : string =
   ## encode non uri characters
 
   result = decodeUrl(url, decodePlus)
@@ -545,7 +545,7 @@ proc `$`*(self : Uri3) : string =
     result = query
 
   # Let's be lazy about this. :P
-  var u : URI = URI(
+  var u : Uri = Uri(
       scheme : self.scheme,
       username : self.username,
       password : self.password,
